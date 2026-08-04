@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lyrics Video Generator - Milestone 2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1>Lyrics Video Generator</h1>
+            <button id="btn-show-docs" style="background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color);">📖 Panduan & Docs</button>
+        </header>
+        
+        <main class="layout">
+            <!-- Preview Section -->
+            <section id="preview-section" class="card">
+                <canvas id="preview-canvas" width="1280" height="720"></canvas>
+            </section>
+
+                        <!-- Theme Marketplace Section -->
+            <section id="theme-section" class="card">
+                <div class="theme-header">
+                    <h3>Theme Marketplace & Creator</h3>
+                    <div class="theme-actions">
+                        <button id="btn-random-theme">🎲 Random</button>
+                        <button id="btn-import-theme">📂 Import JSON</button>
+                        <button id="btn-export-theme">💾 Export Aktif</button>
+                    </div>
+                </div>
+
+                <!-- Tab Navigasi -->
+                <div class="tabs">
+                    <button class="tab-btn active" data-target="marketplace-view">Marketplace</button>
+                    <button class="tab-btn" data-target="creator-view">Visual Creator</button>
+                    <button class="tab-btn" data-target="ai-view">AI Generator</button>
+                </div>
+
+                <!-- View: Marketplace Grid -->
+                <div id="marketplace-view" class="tab-content active">
+                    <div class="theme-grid" id="theme-grid">
+                        <!-- Card tema akan di-generate di sini -->
+                    </div>
+                </div>
+
+                <!-- View: Visual Creator -->
+                <div id="creator-view" class="tab-content" style="display: none;">
+                    <div class="creator-form">
+                        <div class="input-group">
+                            <label>Nama Tema</label>
+                            <input type="text" id="create-name" placeholder="Misal: Tema Kerenku">
+                        </div>
+                        <div class="layout-row">
+                            <div class="input-group">
+                                <label>Background Color</label>
+                                <input type="color" id="create-bg" value="#000000">
+                            </div>
+                            <div class="input-group">
+                                <label>Font Color</label>
+                                <input type="color" id="create-color" value="#ffffff">
+                            </div>
+                        </div>
+                        <div class="layout-row">
+                            <div class="input-group">
+                                <label>Font Family</label>
+                                <select id="create-font">
+                                    <option value="'Inter', sans-serif">Inter</option>
+                                    <option value="monospace">Monospace</option>
+                                    <option value="'Consolas', monospace">Consolas</option>
+                                    <option value="'Courier New', Courier, monospace">Courier New</option>
+                                    <option value="'Times New Roman', Times, serif">Times New Roman</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Efek Animasi</label>
+                                <select id="create-effect">
+                                    <option value="fade">Fade</option>
+                                    <option value="typewriter">Typewriter</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="btn-save-theme">Simpan & Terapkan Tema</button>
+                    </div>
+                </div>
+
+                <!-- View: AI Generator -->
+                <div id="ai-view" class="tab-content" style="display: none;">
+                    <div class="ai-form">
+                        <p class="hint">Ketik prompt untuk membuat tema secara otomatis (Misal: "Buat tema cyberpunk neon" atau "Tema minecraft malam hari").</p>
+                        <textarea id="ai-prompt" rows="3" placeholder="Ketik imajinasimu di sini..."></textarea>
+                        <button id="btn-generate-ai">✨ Generate Theme</button>
+                        <p id="ai-status" class="hint"></p>
+                    </div>
+                </div>
+
+                <!-- Hidden file input for import -->
+                <input type="file" id="import-theme-input" accept=".json" style="display: none;">
+            </section>
+
+            <!-- Tambahan Milestone 8: Plugin System Info -->
+            <section id="plugin-section" class="card">
+                <h3>System Plugins</h3>
+                <p class="hint">Plugin berjalan secara independen dan memperluas fitur aplikasi tanpa memodifikasi core engine.</p>
+                <ul id="plugin-list" style="margin-top: 10px; padding-left: 20px; color: var(--accent-color); font-family: monospace;">
+                    <!-- Daftar plugin yang aktif akan diinjeksi di sini -->
+                </ul>
+            </section>
+
+            <!-- Plugin Section ... (kode sebelumnya) -->
+
+            <!-- Tambahan Milestone 9: Performance & Quality -->
+            <section id="performance-section" class="card">
+                <h3>Performance & Quality</h3>
+                <div class="layout-row" style="margin-top: 10px;">
+                    <div class="input-group">
+                        <label for="setting-resolution">Resolusi Video</label>
+                        <select id="setting-resolution">
+                            <option value="720">HD (720p - 1280x720)</option>
+                            <option value="1080">FHD (1080p - 1920x1080)</option>
+                            <option value="1440">QHD (1440p - 2560x1440)</option>
+                            <option value="2160">4K (2160p - 3840x2160)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="setting-fps">Frame Rate (FPS)</label>
+                        <select id="setting-fps">
+                            <option value="60">60 FPS (Smooth)</option>
+                            <option value="30">30 FPS (Hemat CPU)</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Export Section (Diperbarui) -->
+            <section id="export-section" class="card">
+                <h3>Export Media</h3>
+                <div class="controls" style="margin-top: 10px; flex-wrap: wrap; gap: 10px;">
+                    <button id="export-video-btn" disabled>Export Video (WebM)</button>
+                    <!-- Tambahan Milestone 6: Tombol Export LRC -->
+                    <button id="export-subtitle-btn" disabled>Export Subtitle (.lrc)</button>
+                    <span id="export-status">Siap</span>
+                </div>
+            </section>
+
+            <!-- Timeline Section -->
+            <section id="timeline-section" class="card">
+                <div class="progress-container" id="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+            </section>
+
+            <!-- Audio Control Section -->
+            <section id="audio-section" class="card">
+                <div class="input-group">
+                    <label for="audio-upload">Upload Audio (MP3, WAV)</label>
+                    <input type="file" id="audio-upload" accept="audio/*">
+                </div>
+                <div class="controls">
+                    <button id="play-pause-btn" disabled>Play</button>
+                    <span id="time-display">00:00 / 00:00</span>
+                </div>
+            </section>
+
+            <!-- Lyrics Editor Section -->
+            <section id="lyrics-section" class="card layout-row">
+                <div class="lyrics-input-area">
+                    <label for="lyrics-input">Input Lirik (Pisahkan dengan Enter)</label>
+                    <textarea id="lyrics-input" rows="10" placeholder="Ketik atau paste lirik di sini..."></textarea>
+                    <button id="parse-lyrics-btn">Load Lirik</button>
+                </div>
+                <div class="lyrics-sync-area">
+                    <h3>Editor Sinkronisasi</h3>
+                    <p class="hint">Klik "Sync" saat audio memutar bagian lirik tersebut.</p>
+                    <div id="lyrics-list" class="lyrics-list">
+                        <!-- List lirik akan muncul di sini -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+        <!-- Tambahan Milestone 10: Modal Dokumentasi -->
+        <div id="docs-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>📚 Dokumentasi Pengguna & Developer</h2>
+                    <button id="btn-close-docs" class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body" style="line-height: 1.6; margin-top: 15px;">
+                    <h3>Cara Penggunaan</h3>
+                    <ol>
+                        <li><b>Upload Audio:</b> Masukkan file berformat MP3 atau WAV.</li>
+                        <li><b>Input Lirik:</b> Ketik atau tempel (paste) lirik Anda. Pisahkan setiap bait dengan tombol Enter. Klik "Load Lirik".</li>
+                        <li><b>Sinkronisasi:</b> Putar lagu, lalu klik tombol <b>Sync</b> pada baris lirik yang tepat saat penyanyi menyanyikannya.</li>
+                        <li><b>Kustomisasi:</b> Pilih atau buat tema visual di bagian <i>Theme Marketplace</i>.</li>
+                        <li><b>Ekspor:</b> Pilih resolusi, lalu klik "Export Video" untuk merender video MP4/WebM secara offline.</li>
+                    </ol>
+                    <hr style="margin: 20px 0; border-color: #444;">
+                    <h3>Arsitektur (Untuk Developer)</h3>
+                    <p>Aplikasi ini dibangun menggunakan pola <b>Clean Architecture</b> dan <b>ES Modules</b> tanpa framework eksternal.</p>
+                    <ul>
+                        <li><code>core/</code> - Berisi EventBus (Pub/Sub), Global State, dan Plugin Manager.</li>
+                        <li><code>modules/</code> - Komponen terisolasi dengan tanggung jawab tunggal (Single Responsibility Principle).</li>
+                        <li><code>plugins/</code> - Ekstensi pihak ketiga yang berinteraksi via Hook (<code>BEFORE_RENDER</code>, <code>AFTER_RENDER</code>).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    <script type="module" src="src/core/app.js"></script>
+</body>
+</html>
